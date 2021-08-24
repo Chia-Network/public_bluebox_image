@@ -78,6 +78,8 @@ jobs:
           apk add py3-pip
           pip3 install j2cli
 
+      - uses: actions/checkout@v2
+
       - name: Create terraform file from jinja2
         run: |
           j2 -o terraform/state.tf terraform/state.tf.j2
