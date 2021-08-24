@@ -35,7 +35,6 @@ terraform.rc
 
 # Backup and clone scripts
 *S3-*.sh
-
+state.tf
 *variables.yml*
-
 *scraps*

@@ -39,6 +39,7 @@ jobs:
             vault_url: ${{ secrets.VAULT_URL }}
             vault_token: ${{ secrets.VAULT_TOKEN }}
             role_name: ami-build
+
       - name: install deps
         run: apk add aws-cli git packer ansible
 
