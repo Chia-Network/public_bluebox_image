@@ -73,6 +73,11 @@ jobs:
           vault_token: ${{ secrets.VAULT_TOKEN }}
           role_name: ami-build
 
+      - name:
+        run: |
+          apk add py3-pip
+          pip3 install j2cli
+
       - name: Create terraform file from jinja2
         run: |
           j2 -o terraform/state.tf terraform/state.tf.j2
