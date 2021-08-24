@@ -6,18 +6,11 @@ on:
       - "main"
 jobs:
   packer_validate:
-    runs-on: [k8s-public]
+    runs-on: [ k8s-public ]
     container:
       image: alpine:latest
     timeout-minutes: 60
     steps:
-      - name: Get ephemeral aws credentials
-        uses: Chia-Network/actions/vault/aws-sts@main
-        with:
-          vault_url: ${{ secrets.VAULT_URL }}
-          vault_token: ${{ secrets.VAULT_TOKEN }}
-          role_name: ami-build
-
       - name: install deps
         run: apk add aws-cli git packer ansible
 
@@ -34,12 +27,18 @@ jobs:
           packer validate bluebox_base.json
 
   packer_build:
-    needs: [packer_validate]
-    runs-on: [k8s-public]
+    needs: [ packer_validate ]
+    runs-on: [ k8s-public ]
     container:
       image: alpine:latest
     timeout-minutes: 200
     steps:
+      - name: Get ephemeral aws credentials
+          uses: Chia-Network/actions/vault/aws-sts@main
+          with:
+            vault_url: ${{ secrets.VAULT_URL }}
+            vault_token: ${{ secrets.VAULT_TOKEN }}
+            role_name: ami-build
       - name: install deps
         run: apk add aws-cli git packer ansible
 
@@ -58,7 +57,7 @@ jobs:
 
   terraform:
     needs: packer_build
-    runs-on: [k8s-public]
+    runs-on: [ k8s-public ]
     container:
       image: hashicorp/terraform:latest
       options: --entrypoint /bin/sh
