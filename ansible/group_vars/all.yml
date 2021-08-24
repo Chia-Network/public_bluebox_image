@@ -1,6 +1,4 @@
 ---
-repo_ref: "{{ lookup('env', 'chia_ref') }}"
-
 download_blockchain_db: false
 network: "mainnet"
 
