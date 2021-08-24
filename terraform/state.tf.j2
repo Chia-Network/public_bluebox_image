@@ -1,0 +1,7 @@
+  terraform {
+    backend "s3" {
+      bucket = {{ S3_BUCKET_NAME }}
+      key    = "bluebox_base_image/terraform.state"
+      region = "us-west-2"
+    }
+  }
