@@ -39,21 +39,3 @@ variable "image_copy_name" {
   type        = string
   default     = "Public_Bluebox_Base"
 }
-
-variable "s3_bucket_name" {
-  description = "Name of the S3 bucket"
-  type = string
-  default = ""
-}
-
-variable "s3_bucket_key" {
-  description = "Path in the bucket for the state"
-  type = string
-  default = ""
-}
-
-variable "s3_bucket_region" {
-  description = "Region of the S3 bucket"
-  type = string
-  default = ""
-}

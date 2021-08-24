@@ -21,14 +21,6 @@ provider "aws" {
 //  alias  = "region5"
 //  region = var.region5
 //}
-//
-//terraform {
-//  backend "s3" {
-//    bucket = var.s3_bucket_name
-//    key    = var.s3_bucket_key
-//    region = var.s3_bucket_region
-//  }
-//}
 
 data "aws_ami" "ami" {
   most_recent = true
