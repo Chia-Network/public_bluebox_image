@@ -27,7 +27,7 @@ The group variables yaml file contains the variables that are going to be used t
 the default variables in the chia-blockchain config file. This is how we
 explicitly configure running a timelord, more specifically, a bluebox. In our code, the
 playbook file is going to be used to call pre-existing roles, previously created by the
-Chia team, and are located here: https://github.com/Chia-Network/ansible-roles. Of all 
+Chia team, and are located in this [repository](https://github.com/Chia-Network/ansible-roles). Of all 
 the roles that are contained in that repository, we are only calling five of them: unattended-upgrades,
 apt-update, git, python, and chia-blockchain, installing the software and updating.
 
@@ -56,7 +56,7 @@ prior to the merge to the main branch.
 
 ## The current status of the image
 
-This image has been currently deployed to all five of the regions. The image is publicly available for use
+This image has been currently deployed to all five of the regions (listed above in the terraform section). The image is publicly available for use
 in AWS. If a forked version of this image is desired, this repository can be forked and changes made to it
 
 ## Deploying the image to EC2 Instances
