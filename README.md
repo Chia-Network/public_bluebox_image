@@ -65,7 +65,7 @@ If not already done, create an AWS account. There are various options for creati
 instances in AWS:
 - *Create an instance with on-demand pricing.* This type is going to be more costly, but it has
   reliability compared to spot.
-- *Create an instance with spot pricing.* This type is going to be significantly cheaper than the
+- *Create an instance with spot pricing.* This type is typically cheaper than the
   on-demand pricing. However, there is a greater chance for this instance to be interrupted if total
   demand is increased.
 - *Create instances with an autoscaling group, with spot pricing constraints.* This allows for
