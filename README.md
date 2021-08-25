@@ -3,7 +3,7 @@
 This repository contains the necessary code to build a custom Amazon, EBS-backed Ubuntu AMI.
 The image contains a configured installation of the Chia-blockchain code. The config.yaml file for chia-blockchain
 is configured to start a Bluebox timelord on boot. For information on Timelords and Blueboxes,
-please see the wiki page: https://github.com/Chia-Network/chia-blockchain/wiki/Timelords.
+please see the [wiki page](https://github.com/Chia-Network/chia-blockchain/wiki/Timelords).
 
 ## How the image is created
 
