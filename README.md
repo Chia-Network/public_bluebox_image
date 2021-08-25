@@ -77,7 +77,7 @@ If you are unfamiliar with the process for creating EC2 instances, please refer 
 
 ###### Instance Types
 
-The CPU processing power for the Bluebox is not as intensive as the Timelord, but the vdf client
+The CPU for the Bluebox is not required to be as fast as a normal Timelord, but the vdf client
 process is still demanding. There are a few things to be aware of when deciding which type of
 instance to use for the Blueboxes:
 - The amount storage will need to be enough for the operating system and the blockchain database.
