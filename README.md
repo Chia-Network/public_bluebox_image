@@ -73,8 +73,7 @@ instances in AWS:
   and for specific types. For specific steps on creating the ASG in AWS, go to
 
 
-If you are unfamiliar with the process for creating EC2 instances, please refer to this AWS tutorial
-page: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html
+If you are unfamiliar with the process for creating EC2 instances, please refer to this [AWS tutorial](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html)
 
 ###### Instance Types
 
