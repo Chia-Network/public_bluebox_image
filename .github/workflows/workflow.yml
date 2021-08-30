@@ -1,12 +1,12 @@
 name: Workflow for generating the bluebox image
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # The workflow dispatch will allow for remote triggering of the workflow, either in GitHub or from another workflow
   push:
-    branches:
+    branches: # When pushed to the main (master) branch, the workflow with run
       - "main"
 jobs:
-  packer_validate:
-    runs-on: [ k8s-public ]
+  packer_validate: # This will check the syntax for the packer file
+    runs-on: [ k8s-public ] # Publicly accessible kubernetes runner. This will be used to run the jobs.
     container:
       image: alpine:latest
     timeout-minutes: 60

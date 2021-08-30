@@ -1,13 +1,13 @@
-# Creating the Bluebox Image
+# Creating a Bluebox Timelord
 
-This repository contains the necessary code to build a custom Amazon, EBS-backed Ubuntu AMI.
+This repository contains the necessary code to build a custom Amazon, EBS-backed Ubuntu AMI, Amazon Machine Image.
 The image contains a configured installation of the Chia-blockchain code. The config.yaml file for chia-blockchain
 is configured to start a Bluebox timelord on boot. For information on Timelords and Blueboxes,
 please see the [wiki page](https://github.com/Chia-Network/chia-blockchain/wiki/Timelords).
 
 ## How the image is created
 
-There are various elements that are required to build the AMI, or Amazon Machine Image.
+There are various elements that are required to build the AMI.
 GitHub Actions is used to provide automated workflows, allowing sequenced steps to take place.
 HashiCorp's Packer and Terraform are used for building the image and deploying the image
 to multiple regions in AWS. Lastly, Ansible is used to provision the image, installing software
@@ -59,22 +59,30 @@ prior to the merge to the main branch.
 This image has been currently deployed to all five of the regions (listed above in the terraform section). The image is publicly available for use
 in AWS. If a forked version of this image is desired, this repository can be forked and changes made to it
 
-## Deploying the image to EC2 Instances
+# Deploying the image to EC2 Instances
+The quickest and easiest way to get a Bluebox Timelord running in AWS will be to manually create one or more 
+EC2 instances using the existing AMI "public_bluebox_image".
 
 If not already done, create an AWS account. There are various options for creating one or more
 instances in AWS:
 - *Create an instance with on-demand pricing.* This type is going to be more costly, but it has
-  reliability compared to spot.
+  reliability compared to spot. As the Blueboxes do not need high availability, an on-demand instance
+  is not recommended.
 - *Create an instance with spot pricing.* This type is typically cheaper than the
   on-demand pricing. However, there is a greater chance for this instance to be interrupted if total
-  demand is increased.
+  demand is increased, either by price increases or availability. In the EC2 service tab, go to Instances ->
+  Spot Requests.
 - *Create instances with an autoscaling group, with spot pricing constraints.* This allows for
   automatic deployment of a specified number of instances, in specific regions and availability zones,
-  and for specific types. For specific steps on creating the ASG in AWS, go to
+  and for specific types. For specific steps on creating the ASG in AWS using the web GUI, proceed to 
+  [ASG with Spot Instances](https://aws.amazon.com/getting-started/hands-on/ec2-auto-scaling-spot-instances/) .
 
 
 If you are unfamiliar with the process for creating EC2 instances, please refer to this [AWS tutorial](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html)
+Proceed to the section below for guidance on instance types.
 
+Make sure that assigned security allows for ingress traffic on port 8444, for the full node, and port 22, allowing
+SSH connectivity. Also, ensure that the SSH keys are saved.
 ###### Instance Types
 
 The CPU for the Bluebox is not required to be as fast as a normal Timelord, but the vdf client
@@ -87,12 +95,44 @@ instance to use for the Blueboxes:
   used for CPU-intensive operations for long periods of time. This type of instance defaults to unlimited
   billing for the CPU, therefore, it is possible to exhaust the number of credits in a short period, resulting in additional incurred charges. If there is a desire to run the T* instances,
   the billing can be switched from unlimited to standard.
-- As discussed in the Chia-blockchain Wiki page - Timelords, the process_count for the vdf clients should be
+- As discussed in the Chia-blockchain [Wiki page - Timelords](https://github.com/Chia-Network/chia-blockchain/wiki/Timelords), the process_count for the vdf clients should be
   properly adjusted based on CPU performance. This can be evaluated while the bluebox is running, by monitoring
   the resources. The default process_count in the chia-blockchain config.yml is set to 3. However,
   we have set the process_count to 2 in this image.
+  - After testing with a variety of CPUs, we have found a general rule-of-thumb of setting one process_count
+    (vdf client process) for every two CPU that support hyperthreading
 
 ###### Finding the AMI in AWS
 
 The name of the instance in AWS is "Public Bluebox Base- (Timestamp)". As new versions of the image
 are built, the timestamp value and the AMI ID will change.
+
+###### Items That Need to be Updated for Building and Deploying a Custom AMI
+
+- [S3 Bucket Name](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L67) - 
+  Located in .github -> workflows -> workflow.yml.This is used to store the state file. This needs to be changed to a
+  different, accessible file path.
+- ["Get ephemeral aws credentials"](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L36) step - Located in .github -> workflows -> workflow.yml.
+  This step needs to be replaced with your own credentials. Recommend using the actions in this [repo](https://github.com/aws-actions/configure-aws-credentials).
+###### Things to Note
+
+- Any users who run the image will need to either sync the blockchain database, or pull their own copy of the 
+  database. Chia will not be providing a source of this database.
+- The Chia Network will not be responsible for any incurred charges. While we are providing some tips and
+  guidance on creating EC2 instances, it is the user's responsible to ensure proper configuration and monitor
+  the costs of instances.
+
+## Using Terraform to Automate the Deployment
+
+For those who are interested in using Terraform for deploying to AWS, a Terraform folder, named
+"terraform_example", is available to use as a template. There will also be a GitHub folder, where a workflow 
+file can be viewed.
+
+There are some assumptions to make when utilizing the code that we have in the *.tf files:
+- The code is written to be used with GitHub Actions. There are other services available, such as Azure 
+  DevOps and GitLab CI/CD.
+
+  *Note: The Terraform code can be ran locally on a user's machine and not using a CI/CD pipeline. This will 
+  require the installation of Terraform to be performed on the local machine.*
+- There will be some variables that will to be provided a value, including the security group, key name,
+  iam instance profile, S3 bucket name, 

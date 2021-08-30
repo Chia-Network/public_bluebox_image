@@ -15,13 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get ephemeral aws credentials
-        uses: Chia-Network/actions/vault/aws-sts@main
-        with:
-          vault_url: ${{ secrets.VAULT_URL }}
-          vault_token: ${{ secrets.VAULT_TOKEN }}
-          role_name: ami-build
-
       - uses: Chia-Network/actions/terraform/plan@main
         with:
           workspace: default
