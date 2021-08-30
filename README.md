@@ -54,12 +54,12 @@ we also run the 'terraform plan' command in a separate workflow, when new commit
 other than main. This allows the plan to run, viewable in GitHub, and any issues to be identified
 prior to the merge to the main branch.
 
-## The current status of the image
+## The Current Status of the Image
 
 This image has been currently deployed to all five of the regions (listed above in the terraform section). The image is publicly available for use
-in AWS. If a forked version of this image is desired, this repository can be forked and changes made to it
+in AWS. If a forked version of this image is desired, this repository can be forked and changes made to it.
 
-# Deploying the image to EC2 Instances
+# Deploying the Image to EC2 Instances
 The quickest and easiest way to get a Bluebox Timelord running in AWS will be to manually create one or more 
 EC2 instances using the existing AMI "public_bluebox_image".
 
@@ -100,7 +100,7 @@ instance to use for the Blueboxes:
   the resources. The default process_count in the chia-blockchain config.yml is set to 3. However,
   we have set the process_count to 2 in this image.
   - After testing with a variety of CPUs, we have found a general rule-of-thumb of setting one process_count
-    (vdf client process) for every two CPU that support hyperthreading
+    (vdf client process) for every two CPU that support hyperthreading.
 
 ###### Finding the AMI in AWS
 
@@ -135,4 +135,4 @@ There are some assumptions to make when utilizing the code that we have in the *
   *Note: The Terraform code can be ran locally on a user's machine and not using a CI/CD pipeline. This will 
   require the installation of Terraform to be performed on the local machine.*
 - There will be some variables that will to be provided a value, including the security group, key name,
-  iam instance profile, S3 bucket name, 
+  iam instance profile, and S3 bucket name. 
