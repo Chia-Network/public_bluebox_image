@@ -6,13 +6,8 @@ terraform {
       version = "~> 3.0"
     }
   }
-  backend "s3" {  // Where the state file will live in for terraform
-    bucket = ""
-    key = "terraform.tfstate"
-    region = "us-west-2"
-    workspace_key_prefix = ""
-  }
 }
+
 provider "aws" {
   region = var.region
 }
@@ -20,43 +15,6 @@ terraform {
   required_version = ">= 0.12"
 }
 
-data "aws_vpc" "vpc" {
-  filter {
-    name = "tag:Name"
-    values = [
-      var.vpc_name_filter]
-  }
-}
-
-data "aws_security_groups" "sgs" {
-  filter {
-    name = "tag:Name"
-    values = [
-      "private-ssh",
-      var.security_group_pattern]
-  }
-
-  filter {
-    name = "vpc-id"
-    values = [
-      data.aws_vpc.vpc.id]
-  }
-}
-
-data "aws_security_groups" "sgs" {
-  filter {
-    name = "tag:Name"
-    values = [
-      "private-ssh",
-      var.security_group_pattern]
-  }
-
-  filter {
-    name = "vpc-id"
-    values = [
-      data.aws_vpc.vpc.id]
-  }
-}
 // This data source is searching for an AMI named "Chia_Bluebox_Base" that is the most recent. This when then be used to get the image_id in the aws_launch_template
 data "aws_ami" "Bluebox" {
   most_recent = true
@@ -105,6 +63,7 @@ resource "aws_launch_template" "bluebox" {
   image_id = data.aws_ami.Bluebox.id
   instance_type = var.instance_type_1
   key_name = var.key_name
+  vpc_security_group_ids = [aws_security_group.bluebox_security.id]
 
   block_device_mappings {   // This will mount an EBS volume of 50GB. Some instance-types have specific capacities associated with them.
     device_name = "/dev/sda1"
@@ -117,7 +76,7 @@ resource "aws_launch_template" "bluebox" {
     }
   }
 
-  iam_instance_profile {
+  iam_instance_profile { // Use this if an IAM profile has already been created and additional permissions are required.
     name = var.iam_instance_profile
   }
 
@@ -132,4 +91,37 @@ resource "aws_launch_template" "bluebox" {
       Value = true
     }
   }
+}
+
+resource aws_security_group "bluebox_security" {
+  name = "allow_ssh_chia"
+  description = "Allow inbound SSH and Chia traffic to the host(s)"
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "SSH from AWS GH Runners"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"] // Narrow this range down to only the IPs that can access the Bluebox
+    ipv6_cidr_blocks = ["::/0"] // Narrow this range down to only the IPs that can access the Bluebox
+  }
+
+  ingress {
+    description      = "SSH from Colo GH Runners"
+    from_port        = 8444
+    to_port          = 8444
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
 }

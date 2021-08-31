@@ -15,25 +15,15 @@ variable "max_size" {
 variable "min_size" {
   default = "1"
 }
-variable "security_group_pattern" {
-  description = "SG patterns to add to the instance"
-  type = string
-  default = ""
-}
+
 variable "key_name" {
-  description = "instance private key file aws name"
+  description = "Instance private key file aws name"
   type = string
   default = ""
 }
 
 variable "iam_instance_profile" {
   description = "Name of iam_instance_profile"
-  type = string
-  default = ""
-}
-
-variable "vpc_name_filter" {
-  description = "Find VPC"
   type = string
   default = ""
 }

@@ -114,6 +114,9 @@ are built, the timestamp value and the AMI ID will change.
   different, accessible file path.
 - ["Get ephemeral aws credentials"](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L36) step - Located in .github -> workflows -> workflow.yml.
   This step needs to be replaced with your own credentials. Recommend using the actions in this [repo](https://github.com/aws-actions/configure-aws-credentials).
+- [k8s-public](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L9) -
+  Located in .github -> workflows -> workflow.yml & tfplan.yml. This runner is for internal use only. A default AWS Linux runner can be
+  specified, such as ubuntu:latest. 
 ###### Things to Note
 
 - Any users who run the image will need to either sync the blockchain database, or pull their own copy of the 
@@ -125,7 +128,7 @@ are built, the timestamp value and the AMI ID will change.
 ## Using Terraform to Automate the Deployment
 
 For those who are interested in using Terraform for deploying to AWS, a Terraform folder, named
-"terraform_example", is available to use as a template. There will also be a GitHub folder, where a workflow 
+"terraform_deploy_example", is available to use as a template. There will also be a GitHub folder, where a workflow 
 file can be viewed.
 
 There are some assumptions to make when utilizing the code that we have in the *.tf files:
