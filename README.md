@@ -137,5 +137,5 @@ There are some assumptions to make when utilizing the code that we have in the *
 
   *Note: The Terraform code can be ran locally on a user's machine and not using a CI/CD pipeline. This will 
   require the installation of Terraform to be performed on the local machine.*
-- There will be some variables that will to be provided a value, including the security group, key name,
+- There will be some variables that will be provided a value, including the security group, key name,
   iam instance profile, and S3 bucket name. 

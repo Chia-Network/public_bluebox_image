@@ -35,6 +35,8 @@ resource "aws_autoscaling_group" "bluebox" {
   capacity_rebalance = true
   health_check_type = "ELB"
   health_check_grace_period = 300
+  availability_zones = [""] // List the availability zones for the region. If using non-default VPCs
+  // use vpc_zone_identifier instead.
 
   mixed_instances_policy {
     instances_distribution {
@@ -43,7 +45,7 @@ resource "aws_autoscaling_group" "bluebox" {
       spot_allocation_strategy = "lowest-price" // The other option for spot_allocation_strategy is capacity-optimized. However, we are more concerned with the price over availability.
       //The Spot Instances come from the pools with optimal capacity for the number of instances that are launching. You can optionally set a priority for each instance type.
       spot_instance_pools = 4
-      spot_max_price = "0.035" // If the spot instances exceed the maximum, they will automatically be scaled down to "0".
+      spot_max_price = "0.080" // If the spot instances exceed the maximum, they will automatically be scaled down to "0".
     }
 
     launch_template {
@@ -106,7 +108,7 @@ resource aws_security_group "bluebox_security" {
   }
 
   ingress {
-    description      = "SSH from AWS GH Runners"
+    description      = "SSH Access"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
@@ -115,7 +117,7 @@ resource aws_security_group "bluebox_security" {
   }
 
   ingress {
-    description      = "SSH from Colo GH Runners"
+    description      = "Traffic from Chia components"
     from_port        = 8444
     to_port          = 8444
     protocol         = "tcp"
