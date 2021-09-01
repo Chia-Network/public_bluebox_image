@@ -99,7 +99,7 @@ instance to use for the Blueboxes:
   the resources. The default process_count in the chia-blockchain config.yml is set to 3. However,
   we have set the process_count to 2 in this image.
   - After testing with a variety of CPUs, we have found a general rule-of-thumb of setting one process_count
-    (vdf client process) for every two CPU that support hyperthreading.
+    (vdf client process) for every two CPU threads.
 
 ###### Finding the AMI in AWS
 

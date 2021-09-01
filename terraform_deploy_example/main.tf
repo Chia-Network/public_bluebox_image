@@ -24,7 +24,7 @@ data "aws_ami" "Bluebox" {
   filter {
     name = "name"
     values = [
-      "Chia_Bluebox_Base*"]
+      "Public_Bluebox_Base*"]
   }
 }
 
