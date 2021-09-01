@@ -20,6 +20,9 @@
             },
             "ami_name": "Public_Bluebox_Base-{{timestamp}}",
             "ami_description": "Public Bluebox Image, built from {{.SourceAMI}} ({{.SourceAMIName}}) at {{isotime}}",
+            "ami_groups": [
+                "all"
+            ],
             "tags": {
                 "Name": "Public Bluebox Base-{{timestamp}}"
             }
