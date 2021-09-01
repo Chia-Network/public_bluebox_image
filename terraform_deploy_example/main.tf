@@ -54,9 +54,13 @@ resource "aws_autoscaling_group" "bluebox" {
         version = "$Latest"
       }
 
-      override {   // This is the preferential instance type that will be launched instead of the specified type in the aws_launch_template
-        instance_type = var.instance_type_2
+      override {
+        // This is required instead in addition to specifying the instance type in the launch template.
+        instance_type = var.instance_type_1
       }
+//      override {   // Use this if you want to add more instance types to the list of preferential types.
+//        instance_type = var.instance_type_2
+//      }
     }
   }
 }
@@ -76,10 +80,6 @@ resource "aws_launch_template" "bluebox" {
       delete_on_termination = "true"
       encrypted = "false"
     }
-  }
-
-  iam_instance_profile { // Use this if an IAM profile has already been created and additional permissions are required.
-    name = var.iam_instance_profile
   }
 
   lifecycle {
