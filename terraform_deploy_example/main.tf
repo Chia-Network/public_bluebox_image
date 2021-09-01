@@ -82,6 +82,10 @@ resource "aws_launch_template" "bluebox" {
     }
   }
 
+  iam_instance_profile { // Use this if an IAM profile has already been created and additional permissions are required.
+    name = var.iam_instance_profile
+  }
+
   lifecycle {
     create_before_destroy = true
   }
