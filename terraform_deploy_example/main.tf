@@ -19,7 +19,7 @@ terraform {
 data "aws_ami" "Bluebox" {
   most_recent = true
   owners = [
-    "self"]
+    "067508366995"]
 
   filter {
     name = "name"

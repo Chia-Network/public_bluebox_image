@@ -106,16 +106,6 @@ instance to use for the Blueboxes:
 The name of the instance in AWS is "Public Bluebox Base- (Timestamp)". As new versions of the image
 are built, the timestamp value and the AMI ID will change.
 
-###### Items That Need to be Updated for Building and Deploying a Custom AMI
-
-- [S3 Bucket Name](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L67) - 
-  Located in .github -> workflows -> workflow.yml.This is used to store the state file. This needs to be changed to a
-  different, accessible file path.
-- ["Get ephemeral aws credentials"](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L36) step - Located in .github -> workflows -> workflow.yml.
-  This step needs to be replaced with your own credentials. Recommend using the actions in this [repo](https://github.com/aws-actions/configure-aws-credentials).
-- [k8s-public](https://github.com/Chia-Network/public_bluebox_image/blob/733d932f9db26227443cb2153b99304787319a48/.github/workflows/workflow.yml#L9) -
-  Located in .github -> workflows -> workflow.yml & tfplan.yml. This runner is for internal use only. A default AWS Linux runner can be
-  specified, such as ubuntu:latest. 
 ###### Things to Note
 
 - Any users who run the image will need to either sync the blockchain database, or pull their own copy of the 
@@ -134,8 +124,10 @@ There are some assumptions to make when utilizing the code that we have in the *
 - The code is written to be used with GitHub Actions. There are other services available, such as Azure 
   DevOps and GitLab CI/CD.
 
-  *Note: The Terraform code can be ran locally on a user's machine and not using a CI/CD pipeline. This will 
+  ***Note: The Terraform code can be ran locally on a user's machine and not using a CI/CD pipeline. This will 
   require the installation of Terraform to be performed on the local machine.*
+
+
 - There will be some variables that will be provided a value, including the security group, key name,
   iam instance profile, and S3 bucket name. However, these will need to be populated with values that
   are unique to you.
