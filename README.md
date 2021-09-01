@@ -36,7 +36,6 @@ apt-update, git, python, and chia-blockchain, installing the software and updati
 The terraform file is used to copy the image from the origin region to any additional regions that
 are specified. By default, we are copying the image from us-west-2 to the following regions:
 
-- us-west-2 (Oregon)
 - us-east-1 (N. Virginia)
 - ap-northeast-1 (Tokyo)
 - ap-southeast-1 (Singapore)
