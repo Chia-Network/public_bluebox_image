@@ -14,7 +14,6 @@ jobs:
       options: --entrypoint /bin/sh
     steps:
       - uses: actions/checkout@v2
-
       - name: Get ephemeral aws credentials
         uses: Chia-Network/actions/vault/aws-sts@main
         with:
