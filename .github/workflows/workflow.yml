@@ -5,8 +5,8 @@ on:
     branches: # When pushed to the main branch, the workflow with run
       - "main"
 env:
-  S3_Backup_Bucket_Name: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
-
+  S3_BACKUP_BUCKET_NAME: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
+  S3_STATE_BUCKET_NAME: ${{ secrets.S3_STATE_BUCKET_NAME }}
 jobs:
   packer_validate: # This will check the syntax for the packer file
     runs-on: [k8s-public] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public

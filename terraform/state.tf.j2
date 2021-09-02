@@ -1,6 +1,6 @@
   terraform {
     backend "s3" {
-      bucket = {{ S3_BUCKET_NAME }}
+      bucket = {{ S3_STATE_BUCKET_NAME }}
       key    = "public_bluebox_image/terraform.state"
       region = "us-west-2"
     }
