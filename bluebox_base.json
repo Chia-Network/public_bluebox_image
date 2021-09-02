@@ -32,17 +32,17 @@
           "volume_size": "50",
           "delete_on_termination": true
         }
-      ],
-      "provisioners": [
-        {
-          "type": "ansible",
-          "user": "ubuntu",
-          "ansible_env_vars": [
-            "ansible_python_interpreter=/usr/bin/python3"
-          ],
-          "playbook_file": "./ansible/playbook.yml"
-        }
       ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "user": "ubuntu",
+      "ansible_env_vars": [
+        "ansible_python_interpreter=/usr/bin/python3"
+      ],
+      "playbook_file": "./ansible/playbook.yml"
     }
   ]
 }
