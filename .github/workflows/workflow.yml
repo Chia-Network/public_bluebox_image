@@ -9,7 +9,7 @@ env:
   S3_STATE_BUCKET_NAME: ${{ secrets.S3_STATE_BUCKET_NAME }}
 jobs:
   packer_validate: # This will check the syntax for the packer file
-    runs-on: [k8s-public] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public
+    runs-on: [ k8s-public ] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public
     container:
       image: alpine:latest
     timeout-minutes: 60
@@ -31,7 +31,7 @@ jobs:
 
   packer_build:
     needs: packer_validate
-    runs-on: [k8s-public]
+    runs-on: [ k8s-public ]
     container:
       image: alpine:latest
     timeout-minutes: 200
@@ -61,7 +61,7 @@ jobs:
 
   terraform:
     needs: packer_build
-    runs-on: [k8s-public]
+    runs-on: [ k8s-public ]
     container:
       image: hashicorp/terraform:latest
       options: --entrypoint /bin/sh
