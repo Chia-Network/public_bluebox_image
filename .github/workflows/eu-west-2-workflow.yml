@@ -7,6 +7,7 @@ on:
 env:
   S3_BACKUP_BUCKET_NAME: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
   S3_STATE_BUCKET_NAME: ${{ secrets.S3_STATE_BUCKET_NAME }}
+  REGION: "eu-west-2"
 jobs:
   packer_validate: # This will check the syntax for the packer file
     runs-on: [ k8s-public ] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public
