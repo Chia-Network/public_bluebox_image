@@ -4,6 +4,9 @@ on:
   push:
     branches: # When pushed to the main branch, the workflow with run
       - "main"
+env:
+  S3_Backup_Bucket_Name: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
+
 jobs:
   packer_validate: # This will check the syntax for the packer file
     runs-on: [k8s-public] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public
@@ -63,8 +66,7 @@ jobs:
       image: hashicorp/terraform:latest
       options: --entrypoint /bin/sh
     timeout-minutes: 200
-    env:
-      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+
     steps:
       - name: Get ephemeral aws credentials
         uses: Chia-Network/actions/vault/aws-sts@main

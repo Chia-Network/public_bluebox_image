@@ -5,7 +5,7 @@ network: "mainnet"
 # Version, peer_count are in the network specific configs, so we can update testnet first
 component: timelord
 log_level: "INFO"
-blockchain_backup_bucket: "{{ lookup('env', 'S3_Bucket_Name') }}"
+blockchain_backup_bucket: "{{ lookup('env', 'S3_Backup_Bucket_Name') }}"
 
 # If set 'True', the timelord will create compact proofs of time, instead of
 # extending the chain.
