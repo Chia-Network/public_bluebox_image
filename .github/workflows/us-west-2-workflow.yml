@@ -1,4 +1,4 @@
-name: Workflow for generating the bluebox image
+name: Generating the us-west-2 bluebox image
 on:
   workflow_dispatch:  # The workflow dispatch will allow for manual triggering of the workflow, either in GitHub or from another workflow
   push:
@@ -7,6 +7,7 @@ on:
 env:
   S3_BACKUP_BUCKET_NAME: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
   S3_STATE_BUCKET_NAME: ${{ secrets.S3_STATE_BUCKET_NAME }}
+  REGION: "us-west-2"
 jobs:
   packer_validate: # This will check the syntax for the packer file
     runs-on: [ k8s-public ] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public
@@ -27,7 +28,7 @@ jobs:
 
       - name: Packer Validate
         run: |
-          packer validate bluebox_base.json
+          packer validate bluebox-base-us-west-2.json
 
   packer_build:
     needs: packer_validate
@@ -57,38 +58,5 @@ jobs:
       - name: Packer build
         run: |
           export AWS_POLL_DELAY_SECONDS=60 && export AWS_MAX_ATTEMPTS=180
-          packer build bluebox_base.json
+          packer build bluebox-base-us-west-2.json
 
-  terraform:
-    needs: packer_build
-    runs-on: [ k8s-public ]
-    container:
-      image: hashicorp/terraform:latest
-      options: --entrypoint /bin/sh
-    timeout-minutes: 200
-
-    steps:
-      - name: Get ephemeral aws credentials
-        uses: Chia-Network/actions/vault/aws-sts@main
-        with:
-          vault_url: ${{ secrets.VAULT_URL }}
-          vault_token: ${{ secrets.VAULT_TOKEN }}
-          role_name: ami-build
-
-      - name:
-        run: |
-          apk add py3-pip
-          pip3 install j2cli
-
-      - uses: actions/checkout@v2
-
-      - name: Create terraform file from jinja2
-        run: |
-          j2 -o terraform/state.tf terraform/state.tf.j2
-          cat terraform/state.tf
-
-      - uses: Chia-Network/actions/terraform/apply@main
-        with:
-          workspace: default
-          varfile: /dev/null
-          terraform_dir: terraform
