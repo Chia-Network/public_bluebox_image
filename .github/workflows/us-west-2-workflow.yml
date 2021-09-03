@@ -28,7 +28,7 @@ jobs:
 
       - name: Packer Validate
         run: |
-          packer validate bluebox-base-us-west-2.json
+          packer validate bluebox-base.json
 
   packer_build:
     needs: packer_validate
@@ -58,5 +58,4 @@ jobs:
       - name: Packer build
         run: |
           export AWS_POLL_DELAY_SECONDS=60 && export AWS_MAX_ATTEMPTS=180
-          packer build bluebox-base-us-west-2.json
-
+          packer build bluebox-base.json
