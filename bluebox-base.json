@@ -1,6 +1,6 @@
 {
   "variables": {
-    "region": "{{env `REGIONS`}}"
+    "region": "{{env `REGION`}}"
   },
   "builders": [
     {

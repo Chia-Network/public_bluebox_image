@@ -1,4 +1,4 @@
-name: Workflow for generating the bluebox image
+name: Workflow for generating the us-west-2 bluebox image
 on:
   workflow_dispatch:  # The workflow dispatch will allow for manual triggering of the workflow, either in GitHub or from another workflow
   push:
