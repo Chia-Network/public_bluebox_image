@@ -35,19 +35,19 @@ variable "instance_name" {
 }
 
 variable "instance_type_1" {
-  description = "The preferred choice of instance type"
+  description = "The preferred choice of instance type and overrides"
   type = string
   default = ""
 }
 
 variable "instance_type_2" {
-  description = "The preferred choice of instance type"
+  description = "The preferred choice of instance type and overrides instance_type_1"
   type = string
   default = ""
 }
 
 //variable "instance_type_3" {
-//  description = "The preferred choice of instance type"
+//  description = "The preferred choice of instance type and overrides instance_type_2"
 //  type = string
 //  default = ""
 //}

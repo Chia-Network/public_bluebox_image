@@ -4,6 +4,8 @@ on:
   push:
     branches: # When pushed to the main branch, the workflow with run
       - "main"
+  schedule:
+    - cron: '30 9,21 * * *'
 env:
   S3_BACKUP_BUCKET_NAME: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
   S3_STATE_BUCKET_NAME: ${{ secrets.S3_STATE_BUCKET_NAME }}
