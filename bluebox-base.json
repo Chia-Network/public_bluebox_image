@@ -5,7 +5,7 @@
   "builders": [
     {
       "type": "amazon-ebs",
-      "region": "{{user 'region'}}",
+      "region": "{{user `region`}}",
       "instance_type": "t3.medium",
       "iam_instance_profile": "packer-profile",
       "ssh_username": "ubuntu",
