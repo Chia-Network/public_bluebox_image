@@ -8,7 +8,7 @@
   hosts: all
   become: yes
   roles:
-    - name: unattended-upgrades #Waits for apt-update and apt-upgrade, then removed unattended-upgrades (Security updates)
+    - name: unattended-upgrades #Waits for apt-update and apt-upgrade (if in progress), then removes unattended-upgrades (Security updates)
     - name: apt-update
     - name: git # Used for cloning the chia-blockchain git repository
     - name: python # Dependency for Chia-Blockchain
