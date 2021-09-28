@@ -18,4 +18,4 @@ process_count: 2
 send_uncompact_interval: 300
 
 # Prevent monit from being installed on the AMI
-add_monit_config: false
+add_monit_config: true
