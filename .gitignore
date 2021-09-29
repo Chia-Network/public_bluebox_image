@@ -38,3 +38,4 @@ terraform.rc
 state.tf
 *variables.yml*
 *scraps*
+super-linter.log
