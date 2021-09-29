@@ -9,7 +9,7 @@ blockchain_backup_bucket: "{{ lookup('env', 'S3_BACKUP_BUCKET_NAME') }}"
 
 # If set 'True', the timelord will create compact proofs of time, instead of
 # extending the chain.
-sanitizer_mode: True
+sanitizer_mode: true
 
 # Number of VDF client processes to keep alive in the local machine.
 process_count: 2
