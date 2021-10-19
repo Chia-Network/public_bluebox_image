@@ -28,3 +28,4 @@ jobs:
           # Ignore the example TF, sicne it has blanks that need to be filled
           VALIDATE_TERRAFORM_TFLINT: false
           VALIDATE_TERRAFORM_TERRASCAN: false
+          VALIDATE_GITHUB_ACTIONS: false # Doesn't work with jwt param yet

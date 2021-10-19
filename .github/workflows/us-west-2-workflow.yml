@@ -6,9 +6,10 @@ on:
       - "main"
   schedule:
     - cron: '30 9,21 * * *'
+permissions:
+  id-token: write
+  contents: read
 env:
-  S3_BACKUP_BUCKET_NAME: ${{ secrets.S3_BACKUP_BUCKET_NAME }}
-  S3_STATE_BUCKET_NAME: ${{ secrets.S3_STATE_BUCKET_NAME }}
   REGION: "us-west-2"
 jobs:
   packer_validate: # This will check the syntax for the packer file
@@ -39,11 +40,25 @@ jobs:
       image: alpine:latest
     timeout-minutes: 200
     steps:
+      - name: Vault Login
+        uses: Chia-Network/actions/vault/login@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          role_name: github
+
+      - name: Get secrets from vault
+        uses: hashicorp/vault-action@v2.3.0
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ env.VAULT_TOKEN }}
+          secrets: |
+            secret/data/blockchain/backups bucket | S3_BACKUP_BUCKET_NAME;
+
       - name: Get ephemeral aws credentials
         uses: Chia-Network/actions/vault/aws-sts@main
         with:
           vault_url: ${{ secrets.VAULT_URL }}
-          vault_token: ${{ secrets.VAULT_TOKEN }}
+          vault_token: ${{ env.VAULT_TOKEN }}
           role_name: ami-build
 
       - name: install deps
