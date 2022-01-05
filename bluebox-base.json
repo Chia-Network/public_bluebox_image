@@ -1,6 +1,7 @@
 {
   "variables": {
-    "region": "{{env `REGION`}}"
+    "region": "{{env `REGION`}}",
+    "github_repository": "{{env `GITHUB_REPOSITORY`}}"
   },
   "builders": [
     {
@@ -27,7 +28,10 @@
         "all"
       ],
       "tags": {
-        "Name": "Public Bluebox Base-{{timestamp}}"
+        "Name": "Public Bluebox Base-{{timestamp}}",
+        "application": "chia-blockchain",
+        "component": "bluebox",
+        "repository": "{{user `github_repository`}}"
       },
       "launch_block_device_mappings": [
         {
