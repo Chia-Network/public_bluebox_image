@@ -65,6 +65,7 @@ jobs:
           vault_url: ${{ secrets.VAULT_URL }}
           vault_token: ${{ env.VAULT_TOKEN }}
           role_name: ami-build
+          ttl: "21600s"
 
       - name: install deps
         run: apk add aws-cli git packer ansible
