@@ -4,6 +4,11 @@ network: "mainnet"
 
 # Version, peer_count are in the network specific configs, so we can update testnet first
 component: timelord
+chia_enabled_services:
+  - full-node
+  - timelord
+  - timelord-launcher
+
 log_level: "INFO"
 blockchain_backup_bucket: "{{ lookup('env', 'S3_BACKUP_BUCKET_NAME') }}"
 
