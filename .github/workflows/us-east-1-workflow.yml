@@ -13,12 +13,6 @@ permissions:
 env:
   REGION: "us-east-1"
 jobs:
-  workflow-keep-alive:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Flip workflow
-        uses: Chia-Network/actions/github/keep-alive@main
-
   packer_validate: # This will check the syntax for the packer file
     runs-on: [ k8s-public ] # k8s-public is used internally only. Recommend using ubuntu:latest in place of k8s-public
     container:
