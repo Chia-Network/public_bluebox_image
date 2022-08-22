@@ -1,0 +1,72 @@
+name: Generate AMIs
+on:
+  workflow_dispatch:  # The workflow dispatch will allow for manual triggering of the workflow, either in GitHub or from another workflow
+  push:
+    branches: # When pushed to the main branch, the workflow with run
+      - "main"
+  schedule:
+    - cron: '30 9,21 * * *'
+concurrency:
+  group: build-amis
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  packer_build:
+    name: Build ${{ matrix.network.name }} ${{ matrix.arch.name }} ${{ matrix.region.name }}
+    runs-on: [k8s-public]
+    container:
+      image: alpine:latest
+    strategy:
+      matrix:
+        network:
+          - name: mainnet
+            shortname: mainnet
+            chia_ref: latest
+        region:
+          - name: us-west-2
+          - name: us-east-1
+          - name: eu-west-2
+          - name: ap-northeast-1
+          - name: ap-southeast-1
+        arch:
+          - name: x86_64
+            instance_type: c5.xlarge
+    env:
+      region: ${{ matrix.region.name }}
+      chia_ref: ${{ matrix.network.chia_ref }}
+      network: ${{ matrix.network.name }}
+      arch: ${{ matrix.arch.name }}
+      instance_type: ${{ matrix.arch.instance_type }}
+    steps:
+      - name: install deps
+        run: apk add aws-cli git packer ansible
+      - uses: actions/checkout@v3
+      - name: Checkout Roles
+        uses: actions/checkout@v3
+        with:
+          repository: Chia-Network/ansible-roles
+          path: ansible/roles
+      - name: Vault Login
+        uses: Chia-Network/actions/vault/login@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          role_name: github
+      - name: Get ephemeral aws credentials
+        uses: Chia-Network/actions/vault/aws-sts@main
+        with:
+          vault_url: ${{ secrets.VAULT_URL }}
+          vault_token: ${{ env.VAULT_TOKEN }}
+          role_name: ami-build
+          ttl: "21600s"
+      - name: Get secrets from vault
+        uses: hashicorp/vault-action@v2.4.2
+        with:
+          url: ${{ secrets.VAULT_URL }}
+          token: ${{ env.VAULT_TOKEN }}
+          secrets: |
+            secret/data/blockchain/backups bucket | S3_BACKUP_BUCKET_NAME;
+      - name: Packer build
+        run: |
+          export AWS_POLL_DELAY_SECONDS=60 && export AWS_MAX_ATTEMPTS=180
+          packer build bluebox_base.json
