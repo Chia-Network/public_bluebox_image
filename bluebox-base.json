@@ -1,20 +1,26 @@
 {
   "variables": {
-    "region": "{{env `REGION`}}",
-    "github_repository": "{{env `GITHUB_REPOSITORY`}}"
+    "region": "{{env `region`}}",
+    "network": "{{env `network`}}",
+    "chia_ref": "{{env `chia_ref`}}",
+    "github_server": "{{env `GITHUB_SERVER_URL`}}",
+    "github_repository": "{{env `GITHUB_REPOSITORY`}}",
+    "github_run_id": "{{env `GITHUB_RUN_ID`}}",
+    "arch": "{{env `arch`}}",
+    "instance_type": "{{env `instance_type`}}"
   },
   "builders": [
     {
       "type": "amazon-ebs",
-      "region": "{{user `region`}}",
-      "instance_type": "t3.medium",
       "iam_instance_profile": "packer-profile",
+      "region": "{{user `region`}}",
+      "instance_type": "{{user `instance_type`}}",
       "ssh_username": "ubuntu",
       "source_ami_filter": {
         "filters": {
           "virtualization-type": "hvm",
           "root-device-type": "ebs",
-          "architecture": "x86_64",
+          "architecture": "{{user `arch`}}",
           "name": "ubuntu/images/hvm-ssd/ubuntu-focal-20.04*"
         },
         "owners": [
@@ -22,16 +28,18 @@
         ],
         "most_recent": true
       },
-      "ami_name": "Public_Bluebox_Base-{{timestamp}}",
+      "ami_name": "Public_Bluebox_Base-{{user `network`}}-{{user `arch`}}-{{timestamp}}",
       "ami_description": "Public Bluebox Image, built from {{.SourceAMI}} ({{.SourceAMIName}}) at {{isotime}}",
-      "ami_groups": [
-        "all"
-      ],
+      "shutdown_behavior": "terminate",
       "tags": {
-        "Name": "Public Bluebox Base-{{timestamp}}",
-        "application": "chia-blockchain",
+        "Name": "Public Bluebox Base {{user `network`}} {{user `arch`}} {{timestamp}}",
+        "network": "{{user `network`}}",
+        "ref": "{{user `chia_ref`}}",
         "component": "bluebox",
-        "repository": "{{user `github_repository`}}"
+        "application": "chia-blockchain",
+        "workflow_url": "{{user `github_server`}}/{{user `github_repository`}}/actions/runs/{{user `github_run_id`}}",
+        "repository": "{{user `github_repository`}}",
+        "arch": "{{user `arch`}}"
       },
       "launch_block_device_mappings": [
         {
@@ -49,6 +57,9 @@
       "user": "ubuntu",
       "ansible_env_vars": [
         "ansible_python_interpreter=/usr/bin/python3"
+      ],
+      "groups": [
+        "{{user `network`}}"
       ],
       "playbook_file": "./ansible/playbook.yml"
     }

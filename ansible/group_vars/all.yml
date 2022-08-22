@@ -1,6 +1,8 @@
 ---
+repo_ref: "{{ lookup('env', 'chia_ref') }}"
+
 download_blockchain_db: true
-network: "mainnet"
+network: "{{ lookup('env', 'network') }}"
 
 # Version, peer_count are in the network specific configs, so we can update testnet first
 component: timelord
