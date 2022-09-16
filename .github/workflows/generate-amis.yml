@@ -18,6 +18,7 @@ jobs:
     container:
       image: alpine:latest
     strategy:
+      fail-fast: false
       matrix:
         network:
           - name: mainnet
