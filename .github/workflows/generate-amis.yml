@@ -61,7 +61,7 @@ jobs:
           role_name: ami-build
           ttl: "21600s"
       - name: Get secrets from vault
-        uses: hashicorp/vault-action@v2.4.2
+        uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_URL }}
           token: ${{ env.VAULT_TOKEN }}
