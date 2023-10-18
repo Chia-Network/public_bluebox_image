@@ -5,7 +5,7 @@ on:
     branches: # When pushed to the main branch, the workflow with run
       - "main"
   schedule:
-    - cron: '30 9,21 * * *'
+    - cron: '30 21 * * *'
 concurrency:
   group: build-amis
 permissions:
@@ -70,4 +70,4 @@ jobs:
       - name: Packer build
         run: |
           export AWS_POLL_DELAY_SECONDS=60 && export AWS_MAX_ATTEMPTS=180
-          packer build bluebox-base.json
+          packer build bluebox-base.pkr.hcl
