@@ -86,6 +86,7 @@ build {
     ansible_env_vars = ["ansible_python_interpreter=/usr/bin/python3"]
     groups           = ["${var.network}"]
     playbook_file    = "./ansible/playbook.yml"
+    use_proxy        = false
     user             = "ubuntu"
     max_retries      = 3
   }
