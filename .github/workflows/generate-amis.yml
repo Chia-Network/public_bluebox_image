@@ -16,7 +16,7 @@ jobs:
     name: Build ${{ matrix.network.name }} ${{ matrix.arch.name }} ${{ matrix.region.name }}
     runs-on: [k8s-public]
     container:
-      image: alpine:latest
+      image: ghcr.io/chia-network/build-images/ips:main
     strategy:
       fail-fast: false
       matrix:
@@ -40,11 +40,9 @@ jobs:
       arch: ${{ matrix.arch.name }}
       instance_type: ${{ matrix.arch.instance_type }}
     steps:
-      - name: install deps
-        run: apk add aws-cli git packer ansible
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Checkout Roles
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: Chia-Network/ansible-roles
           path: ansible/roles
