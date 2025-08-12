@@ -40,9 +40,9 @@ jobs:
       arch: ${{ matrix.arch.name }}
       instance_type: ${{ matrix.arch.instance_type }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Checkout Roles
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: Chia-Network/ansible-roles
           path: ansible/roles
